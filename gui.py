@@ -87,8 +87,6 @@ def reactToEntry():
             openDropdownPicker(text)
         case "date":
             openDropdownPicker(text)
-        case "type":
-            openDropdownPicker(text)
 
 
 def openDropdownPicker(cat):
@@ -102,9 +100,6 @@ def openDropdownPicker(cat):
         case "date":
             for row in rows:
                 choices.append(row[2])
-        case "type":
-            for row in rows:
-                choices.append(row[4])
 
     chosen_button = tk.Button(
         text="Go",
@@ -190,7 +185,7 @@ sortButton = tk.Button(
     command=reactToEntry
 )
 
-tipLabel = tk.Label(text='(Sort by "place", "date", "type", "gain", "loss", or "none".)', bg="#CBCBCB", fg="black")
+tipLabel = tk.Label(text='(Sort by "place", "date", "gain", "loss", or "none".)', bg="#CBCBCB", fg="black")
 
 csvButton.pack()
 
