@@ -11,15 +11,37 @@ window.configure(background="#CBCBCB")
 mainLabel = tk.Label(text='To view a .csv file, click the "Open CSV" button.', bg="#CBCBCB", fg="black")
 mainLabel.pack()
 
-netLabel = tk.Label(text='Your net gain in money over the period of time is: ')
+net_label = None
 
-fileOpened = True
+fileOpened = False
 fileReader = main.csvReader
 
 
 def putStatsToGui(rows):
+    global net_label
+    temp = 0
     for row in rows:
-        print(row[6])
+        temp += float(row[6]) * 100
+    temp = temp / 100
+    if net_label is None:
+        net_label = tk.Label(
+            text='Your net gain over this period of time was $' + str(temp) + ". \n (A negative number "
+                                                                              "means a net loss.)",
+            bg="#CBCBCB", fg="black")
+    else:
+        net_label.config(
+            text='Your net gain over this period of time was $' + str(temp) + ". \n (A negative number "
+                                                                              "means a net loss.)",
+            bg="#CBCBCB", fg="black")
+
+    net_label.pack()
+    csvButton.config(text="Open new CSV",
+                     width=8,
+                     height=2,
+                     fg="black",
+                     bg="#8A8989",
+                     command=openFilePicker
+                     )
     return
 
 
@@ -28,15 +50,16 @@ def displayStats(creader):
     rows = []
     for row in creader:
         rows.append(row)
-    putStatsToGui(header, rows, creader)
+    putStatsToGui(rows)
 
 
 def openFilePicker():
+    global fileOpened
     name = tkinter.filedialog.askopenfilename(title="Select CSV file", filetypes=(("CSV files", "*.csv"),))
     filename = codecs.open(name, encoding='latin-1')
     fileReader.file = filename
-    print(type(filename))
     csvreader = csv.reader(filename, )
+    fileOpened = True
     displayStats(csvreader)
     return
 
