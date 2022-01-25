@@ -89,25 +89,99 @@ def reactToEntry():
             openDropdownPicker(text)
 
 
+def putNewStatsToGui(cat, strg):
+    global net_label
+    match cat:
+        case "place":
+            temp = 0
+            count = 0
+            for row in rows:
+                if row[5] == strg:
+                    temp += float(row[6]) * 100
+                    count += 1
+            temp = temp / 100
+            if net_label is None:
+                net_label = tk.Label(
+                    text='You made ' + str(
+                        count) + ' transactions over this period of time, at this place.\nYour net gain/loss was $' + str(
+                        temp) + ". \n (A negative number "
+                                "means a net loss.)",
+                    bg="#CBCBCB", fg="black")
+            else:
+                net_label.config(
+                    text='You made ' + str(
+                        count) + ' transactions over this period of time, at this place.\nYour net gain/loss was $' + str(
+                        temp) + ". \n (A negative number "
+                                "means a net loss.)",
+                    bg="#CBCBCB", fg="black")
+        case "date":
+            temp = 0
+            count = 0
+            for row in rows:
+                if row[2] == strg:
+                    temp += float(row[6]) * 100
+                    count += 1
+            temp = temp / 100
+            if net_label is None:
+                net_label = tk.Label(
+                    text='You made ' + str(
+                        count) + ' transactions on this date.\nYour net gain/loss was $' + str(
+                        temp) + ". \n (A negative number "
+                                "       means a net loss.)",
+                    bg="#CBCBCB", fg="black")
+            else:
+                net_label.config(
+                    text='You made ' + str(
+                        count) + ' transactions on this date.\nYour net gain/loss was $' + str(
+                        temp) + ". \n (A negative number "
+                                "means a net loss.)",
+                    bg="#CBCBCB", fg="black")
+
+
 def openDropdownPicker(cat):
     new_window = tk.Toplevel(window)
     new_window.title = "Select category"
+    new_window.configure(background="#CBCBCB")
     choices = []
+
     match cat:
         case "place":
             for row in rows:
-                choices.append(row[5])
+                if row[5] not in choices and row[5] != "":
+                    choices.append(row[5])
         case "date":
             for row in rows:
-                choices.append(row[2])
+                if row[2] not in choices and row[2] != "":
+                    choices.append(row[2])
+
+    variable = tk.StringVar(new_window, "Select...")
 
     chosen_button = tk.Button(
+        new_window,
         text="Go",
         width=5,
-        height=2,
+        height=1,
         fg="black",
-        bg="#8A8989",
+        bg="#CBCBCB",
+        command=lambda: putNewStatsToGui(cat, variable.get())
+
     )
+
+    back_button = tk.Button(
+        new_window,
+        text="Back",
+        width=5,
+        height=1,
+        fg="black",
+        bg="#CBCBCB",
+        command=lambda: new_window.destroy()
+    )
+
+    dropdown = tk.OptionMenu(new_window, variable, *choices)
+    dropdown.pack()
+
+    chosen_button.pack()
+    back_button.pack()
 
 
 def putStatsToGui():
@@ -137,9 +211,9 @@ def putStatsToGui():
     tipLabel.pack()
     csvButton.config(text="Open new CSV",
                      width=8,
-                     height=2,
+                     height=1,
                      fg="black",
-                     bg="#8A8989",
+                     bg="#CBCBCB",
                      command=openFilePicker
                      )
     return
@@ -167,9 +241,9 @@ def openFilePicker():
 csvButton = tk.Button(
     text="Open CSV",
     width=5,
-    height=2,
+    height=1,
     fg="black",
-    bg="#8A8989",
+    bg="#CBCBCB",
     command=openFilePicker
 )
 
@@ -179,9 +253,9 @@ commandEntry.insert("end", "<insert command here>")
 sortButton = tk.Button(
     text="Sort by...",
     width=5,
-    height=2,
+    height=1,
     fg="black",
-    bg="#8A8989",
+    bg="#CBCBCB",
     command=reactToEntry
 )
 
