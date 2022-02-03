@@ -2,8 +2,9 @@ import codecs
 import tkinter as tk
 import csv
 import tkinter.filedialog
-import tkinter.ttk as ttk
 
+
+# This window represents the main one, from which one can load in an RBC bank statement and analyze spending data
 window = tk.Tk()
 window.winfo_toplevel().title("pyCSV Reader for RBC statements")
 window.configure(background="#CBCBCB")
@@ -17,11 +18,12 @@ rows = []
 fileOpened = False
 
 
+# Reacts to the command the user has typed into the "sort by" field
 def reactToEntry():
     global net_label
     text = commandEntry.get()
     match text:
-        case "gain":
+        case "gain":  # only values not starting with '-' are counted
 
             temp = 0
             count = 0
@@ -41,7 +43,7 @@ def reactToEntry():
                         temp) + ".",
                     bg="#CBCBCB", fg="black")
 
-        case "loss":
+        case "loss":  # only values starting with '-' are counted
 
             temp = 0
             count = 0
@@ -61,7 +63,7 @@ def reactToEntry():
                         temp) + ".",
                     bg="#CBCBCB", fg="black")
 
-        case "none":
+        case "none":  # go back to not sorting by anything
             temp = 0
             count = 0
             for row in rows:
@@ -89,10 +91,11 @@ def reactToEntry():
             openDropdownPicker(text)
 
 
+# changes label on main window after a specific place/date is chosen
 def putNewStatsToGui(cat, strg):
     global net_label
     match cat:
-        case "place":
+        case "place":  # only transactions from place with name matching strg is counted
             temp = 0
             count = 0
             for row in rows:
@@ -103,18 +106,20 @@ def putNewStatsToGui(cat, strg):
             if net_label is None:
                 net_label = tk.Label(
                     text='You made ' + str(
-                        count) + ' transactions over this period of time, at this place.\nYour net gain/loss was $' + str(
+                        count) + ' transactions over this period of time, at this place.\nYour net gain/loss was '
+                                 '$' + str(
                         temp) + ". \n (A negative number "
                                 "means a net loss.)",
                     bg="#CBCBCB", fg="black")
             else:
                 net_label.config(
                     text='You made ' + str(
-                        count) + ' transactions over this period of time, at this place.\nYour net gain/loss was $' + str(
+                        count) + ' transactions over this period of time, at this place.\nYour net gain/loss was '
+                                 '$' + str(
                         temp) + ". \n (A negative number "
                                 "means a net loss.)",
                     bg="#CBCBCB", fg="black")
-        case "date":
+        case "date":  # only transactions with date matching strg are counted
             temp = 0
             count = 0
             for row in rows:
@@ -138,12 +143,13 @@ def putNewStatsToGui(cat, strg):
                     bg="#CBCBCB", fg="black")
 
 
+# opens the window with a dropdown menu from which the user can sort by specific date or place
 def openDropdownPicker(cat):
-    new_window = tk.Toplevel(window)
+    new_window = tk.Toplevel(window)  # this represents the new window created for this purpose
     new_window.title = "Select category"
     new_window.configure(background="#CBCBCB")
     choices = []
-
+    # fill dropdown picker with dates or places, depeding on cat parameter
     match cat:
         case "place":
             for row in rows:
@@ -155,7 +161,7 @@ def openDropdownPicker(cat):
                     choices.append(row[2])
 
     variable = tk.StringVar(new_window, "Select...")
-
+    # this button updates labels on main gui
     chosen_button = tk.Button(
         new_window,
         text="Go",
@@ -166,7 +172,7 @@ def openDropdownPicker(cat):
         command=lambda: putNewStatsToGui(cat, variable.get())
 
     )
-
+    # this button closes the secondary window
     back_button = tk.Button(
         new_window,
         text="Back",
@@ -184,6 +190,7 @@ def openDropdownPicker(cat):
     back_button.pack()
 
 
+# once a .csv is loaded in, label on main gui is updated with default sort settings ("none").
 def putStatsToGui():
     global net_label
     temp = 0
@@ -219,15 +226,17 @@ def putStatsToGui():
     return
 
 
+# creates 'rows' array that can be analyzed further
 def displayStats(creader):
     global rows
-    header = next(creader)
+    next(creader)
     rows = []
     for row in creader:
         rows.append(row)
     putStatsToGui()
 
 
+# opens the file picker screen upon clicking "open csv" button
 def openFilePicker():
     global fileOpened
     name = tkinter.filedialog.askopenfilename(title="Select CSV file", filetypes=(("CSV files", "*.csv"),))
@@ -238,6 +247,7 @@ def openFilePicker():
     return
 
 
+# this button opens file picker screen
 csvButton = tk.Button(
     text="Open CSV",
     width=5,
@@ -250,6 +260,7 @@ csvButton = tk.Button(
 commandEntry = tk.Entry()
 commandEntry.insert("end", "<insert command here>")
 
+# this button allows user to sort by certain categories
 sortButton = tk.Button(
     text="Sort by...",
     width=5,
