@@ -13,6 +13,8 @@ make better spending decisions.
 
 Who knows, maybe it can do the same for you!
 
+To run this program, use the gui executable in the dist folder.
+
 -Edric
 
 **Note: This may work with .csv files from other banking institutions, but the only one I know for sure it works with is RBC.**
