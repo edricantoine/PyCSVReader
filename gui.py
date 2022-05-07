@@ -4,6 +4,7 @@ import tkinter as tk
 import tkinter.filedialog
 import matplotlib as pllt
 from matplotlib import pyplot as plt
+import config
 
 # This window represents the main one, from which one can load in an RBC bank statement and analyze spending data
 window = tk.Tk()
@@ -365,5 +366,5 @@ tipLabel = tk.Label(
 )
 
 csvButton.pack()
-
+print(config.word)
 window.mainloop()
