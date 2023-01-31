@@ -2,6 +2,8 @@
 
 **Currently works on Mac only!**
 
+**YOU MAY NEED TO INSTALL THE tkinter AND matplotlib LIBRARIES AS A TEMPORARY (!) WORKAROUND UNTIL I FIX ISSUES WITH EMBEDDING THESE WITHIN THE APP.**
+
 by Edric Antoine
 
 This is a simple, GUI-based application designed for viewing and interacting with
