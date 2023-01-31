@@ -1,5 +1,7 @@
 <h1>pyReader for RBC Bank Statements</h1>
 
+**Currently works on Mac only!**
+
 by Edric Antoine
 
 This is a simple, GUI-based application designed for viewing and interacting with
