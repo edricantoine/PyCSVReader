@@ -366,5 +366,4 @@ tipLabel = tk.Label(
 )
 
 csvButton.pack()
-print(config.word)
 window.mainloop()
